@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body class="bg-success">
+<p>links added later</p>
+<div class="container py-4">
+<table>
+<tr th:each="currentMeales: ${Meales}">
+	<td th:text="${currentMeales.id}" />
+	<td th:text="${currentMeales.mealName}" />
+	<td th:text="${currentMeales.calories}" />
+	<td><a th:href="@{/edit/{id}(id=${currentMeales.id})}">Edit</a></td>
+	<td><a th:href="@{/delete/{id}(id=${currentMeales.id})}">Delete</a></td>
+	</tr>
+</table>
+</form>
+</div>
+<div class="container py-4">
+<table>
+<tr th:each="currentExercises: ${Exercises}">
+	<td th:text="${currentExercises.id}" />
+	<td th:text="${currentExercises.exerciseName}" />
+	<td th:text="${currentExercises.amount}" />
+	<td><a th:href="@{/edit/{id}(id=${currentExercises.id})}">Edit</a></td>
+	<td><a th:href="@{/delete/{id}(id=${currentExercises.id})}">Delete</a></td>
+	</tr>
+</table>
+</form>
+<a th:href="@{/addNewMeal}">add more</a>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
