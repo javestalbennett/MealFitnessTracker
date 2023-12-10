@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Input Form</title>
+
+</head>
+<body>
+
+<h2>User Input Form</h2>
+
+<form action="/createUser" method="post">
+    <label for="userName">User Name:</label>
+    <input type="text" id="userName" name="userName" required>
+
+    <label for="selectedExercises">Select Exercises:</label>
+    <select id="selectedExercises" name="exercises" multiple>
+        <option th:each="exercise : ${existingExercises}" th:value="${exercise.id}" th:text="${exercise.exerciseName}"></option>
+    </select>
+
+    <label for="selectedMeals">Select Meals:</label>
+    <select id="selectedMeals" name="meals" multiple>
+        <option th:each="meal : ${existingMeals}" th:value="${meal.id}" th:text="${meal.mealName}"></option>
+    </select>
+
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>

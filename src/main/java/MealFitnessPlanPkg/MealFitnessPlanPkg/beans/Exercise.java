@@ -12,6 +12,9 @@ import jakarta.persistence.Embeddable;
  */
 @Embeddable
 public class Exercise {
+	@Id
+	@GeneratedValue
+	private int id;
 	private String exerciseName;
 	private String amount; // number of reps, sets, time, etc. of some exercise
 

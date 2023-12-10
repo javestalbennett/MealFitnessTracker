@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+<body>
+
+<h2>User Details</h2>
+
+<div th:if="${user != null}">
+    <label>User Name:</label>
+    <p th:text="${user.userName}"></p>
+
+    <label>Selected Exercises:</label>
+    <ul>
+        <li th:each="exercise : ${user.exercises}" th:text="${exercise.exerciseName}"></li>
+    </ul>
+
+    <label>Selected Meals:</label>
+    <ul>
+        <li th:each="meal : ${user.meals}" th:text="${meal.mealName}"></li>
+    </ul>
+</div>
+
+</body>
+</html>

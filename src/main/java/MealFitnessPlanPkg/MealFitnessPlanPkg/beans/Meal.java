@@ -12,6 +12,9 @@ import jakarta.persistence.Embeddable;
  */
 @Embeddable
 public class Meal {
+	@Id
+	@GeneratedValue
+	private int id;
 	String mealName;
 	double calories;
 	

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -9,9 +9,19 @@
 <body class="bg-success">
 <p>links added later</p>
 <div class="container py-4">
-  <form class="rounded p-4 bg-light">
-
+  <form class="rounded p-4 bg-light" name="myForm" th:object="${createMeal}" th:action="@{/update/{id}(id=${createMeal.id})}" method="post">
+     meal: <input type="text" name="mealName" th:field="*{mealName}"><br />
+     calories: <input type="number" name="calories" th:field="*{calories}"><br />
+     <input type="submit" name="submit" value="Submit" />
   </form>
+</div>
+<div class="container py-4">
+  <form class="rounded p-4 bg-light" name="myForm" th:object="${createExercise}" th:action="@{/update/{id}(id=${createExercise.id})}" method="post">
+     exercise Name: <input type="text" name="exerciseName" th:field="*{exerciseName}"><br />
+     number of reps: <input type="number" name="amount" th:field="*{amount}"><br />
+     <input type="submit" name="submit" value="Submit" />
+  </form>
+  <a th:href="@{/viewAll}">View All meals and exercises</a>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
