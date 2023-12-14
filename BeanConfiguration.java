@@ -37,14 +37,14 @@ public class BeanConfiguration {
 		Meal m = new Meal();
 		m.setCalories(600);
 		m.setMealName("Chicken breast");
-		ArrayList<Meal> mealList = new ArrayList();
+		ArrayList<Meal> mealList = new ArrayList<Meal>();
 		mealList.add(m);
 		
 		// create exercise list and add exercise object
 		Exercise e = new Exercise();
 		e.setExerciseName("Jumping jacks");
 		e.setAmount("5x10");
-		ArrayList<Exercise> exerciseList = new ArrayList();
+		ArrayList<Exercise> exerciseList = new ArrayList<Exercise>();
 		exerciseList.add(e);
 		
 		// configure bean
