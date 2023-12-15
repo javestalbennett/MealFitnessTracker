@@ -11,16 +11,16 @@
 
 <div th:if="${user != null}">
     <label>User Name:</label>
-    <p th:text="${user.userName}"></p>
+    <p th:text="${myUsers.userName}"></p>
 
     <label>Selected Exercises:</label>
     <ul>
-        <li th:each="exercise : ${user.exercises}" th:text="${exercise.exerciseName}"></li>
+        <li th:each="myExercises : ${myUsers.exercises}" th:text="${myExercises.exerciseName}"></li>
     </ul>
 
     <label>Selected Meals:</label>
     <ul>
-        <li th:each="meal : ${user.meals}" th:text="${meal.mealName}"></li>
+        <li th:each="myMeals : ${myUsers.meals}" th:text="${myMeals.mealName}"></li>
     </ul>
 </div>
 

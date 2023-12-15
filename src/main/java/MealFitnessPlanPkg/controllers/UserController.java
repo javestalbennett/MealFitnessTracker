@@ -2,72 +2,77 @@ package MealFitnessPlanPkg.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import MealFitnessPlanPkg.MealFitnessPlanPkg.beans.User;
+import MealFitnessPlanPkg.Repository.ExerciseRepository;
+import MealFitnessPlanPkg.Repository.MealRepository;
+import MealFitnessPlanPkg.Repository.UserRepository;
+import MealFitnessPlanPkg.beans.Exercise;
+import MealFitnessPlanPkg.beans.User;
 
-/**
- * @author Itsal - Quinn Birdsley
- * CIS175 - Fall 2021
- * Nov 27, 2023
- */
-
-/**
- * 
- * Explanation: This controller handles all requests related to users. It has
- * five methods:
- * 
- * getAllUsers(): This method returns a list of all users in the system.
- * 
- * 
- * 
- * getUserById(int userId): This method returns a user with the specified ID.
- * 
- * 
- * 
- * createUser(User user): This method creates a new user and returns it.
- * 
- * 
- * 
- * updateUser(int userId, User user): This method updates an existing user with
- * the specified ID and returns it.
- * 
- * 
- * 
- * deleteUser(int userId): This method deletes a user with the specified ID.
- */
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-	private final UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private MealRepository mealRepository;
+    @Autowired
+    private ExerciseRepository exerciseRepository;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
+    @GetMapping("/all")
+    public String viewAllUsers(Model model) {
+        
+        List<User> allUsers = userRepository.findAll();
+        List<User> userMeals = userRepository.findAll();
+        List<Exercise> userExercises = exerciseRepository.findAll();
 
-	@GetMapping
-	public List<User> getAllUsers() {
-		return userService.findAllUsers();
-	}
+        model.addAttribute("user", editUser(0, null));
+        model.addAttribute("myMeals", userMeals);
+        model.addAttribute("myExercises", userExercises);
 
-	@GetMapping("/{userId}")
-	public User getUserById(@PathVariable int userId) {
-		return userService.findUserById(userId);
-	}
+        return "ViewAll";
+    }
 
-	@PostMapping
-	public User createUser(@RequestBody User user) {
-		return userService.createUser(user);
-	}
+    @GetMapping("/input")
+    public String createUser(Model model) {
+        User myUser = new User();
+        exerciseRepository.findAll().isEmpty();
+        mealRepository.findAll().isEmpty();
+        model.addAttribute("myMeals", mealRepository.findAll());
+        model.addAttribute("myExercises", exerciseRepository.findAll());
+        model.addAttribute("newMyUser", myUser);
+        return "addUsers";
+    }
 
-	@PutMapping("/{userId}")
-	public User updateUser(@PathVariable int userId, @RequestBody User user) {
-		return userService.updateUser(userId, user);
-	}
+    @GetMapping("/edit/{id}")
+    public String editUser(@PathVariable("id") long id, Model model) {
+        User myUser = userRepository.findById(id).orElse(null);
+        System.out.println("ITEM TO EDIT: " + myUser.toString());
+        model.addAttribute("newMyUser", myUser);
+        return "addUsers";
+    }
 
-	@DeleteMapping("/{userId}")
-	public void deleteUser(@PathVariable int userId) {
-		userService.deleteUser(userId);
-	}
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable("id") int id, @ModelAttribute("newMyUser") User myUser, Model model) {
+        myUser.setUserId(id);
+        userRepository.save(myUser);
+        return "viewAllUsers";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") long id, Model model) {
+        User myUser = userRepository.findById(id).orElse(null);
+        userRepository.delete(myUser);
+        return viewAllUsers(model);
+    }
+    
+    public String submitUser(@ModelAttribute("newMyUser") User myUser, Model model) {
+        userRepository.save(myUser);
+        return "addUsers";
+    }
 }

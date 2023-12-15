@@ -1,71 +1,69 @@
 package MealFitnessPlanPkg.controllers;
 
+
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import MealFitnessPlanPkg.MealFitnessPlanPkg.beans.Meal;
+import MealFitnessPlanPkg.Repository.MealRepository;
+import MealFitnessPlanPkg.beans.Meal;
 
-/**
- * @author Itsal - Quinn Birdsley
- * CIS175 - Fall 2021
- * Nov 27, 2023
- */
-
-/**
- * This controller handles all requests related to meals. It has five methods:
- * 
- * getAllMeals(): This method returns a list of all meals in the system.
- * 
- * 
- * 
- * getMealById(int mealId): This method returns a meal with the specified ID.
- * 
- * 
- * 
- * createMeal(Meal meal): This method creates a new meal and returns it.
- * 
- * 
- * 
- * updateMeal(int mealId, Meal meal): This method updates an existing meal with
- * the specified ID and returns it.
- * 
- * 
- * 
- * deleteMeal(int mealId): This method deletes a meal with the specified ID.
- */
 @Controller
 @RequestMapping("/meals")
 public class MealController {
 
-	private final MealService mealService;
+    @Autowired
+    private MealRepository mealRepository;
 
-	public MealController(MealService mealService) {
-		this.mealService = mealService;
-	}
+    @GetMapping("/all")
+    public String viewAllMeals(Model model) {
+        if (mealRepository.findAll().isEmpty()) {
+            System.out.println("No meals found in the database.");
+            return createMeal(model);
+        }
 
-	@GetMapping
-	public List<Meal> getAllMeals() {
-		return mealService.findAllMeals();
-	}
+        List<Meal> allMeals = mealRepository.findAll();
+        System.out.println("Number of meals found: " + allMeals.size());
 
-	@GetMapping("/{mealId}")
-	public Meal getMealById(@PathVariable int mealId) {
-		return mealService.findMealById(mealId);
-	}
+        model.addAttribute("myMeals", allMeals);
+        return "ViewAll";
+    }
 
-	@PostMapping
-	public Meal createMeal(@RequestBody Meal meal) {
-		return mealService.createMeal(meal);
-	}
+    @GetMapping("/input")
+    public String createMeal(Model model) {
+        Meal myMeal = new Meal();
+        model.addAttribute("newMyMeal", myMeal);
+        return "inputMeal";
+    }
 
-	@PutMapping("/{mealId}")
-	public Meal updateMeal(@PathVariable int mealId, @RequestBody Meal meal) {
-		return mealService.updateMeal(mealId, meal);
-	}
+    @GetMapping("/edit/{id}")
+    public String editMeal(@PathVariable("id") long id, Model model) {
+        Meal myMeal = mealRepository.findById(id).orElse(new Meal());
+        System.out.println("ITEM TO EDIT: " + myMeal.toString());
+        model.addAttribute("newMyMeal", myMeal);
+        return "inputMeal";
+    }
 
-	@DeleteMapping("/{mealId}")
-	public void deleteMeal(@PathVariable int mealId) {
-		mealService.deleteMeal(mealId);
-	}
+    @PostMapping("/update/{id}")
+    public String updateMeal(@PathVariable("id") int id, Meal myMeal, Model model) {
+        myMeal.setId(id);
+        mealRepository.save(myMeal);
+        return "ViewAll";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteMeal(@PathVariable("id") long id, Model model) {
+        Meal myMeal = mealRepository.findById(id).orElse(null);
+        mealRepository.delete(myMeal);
+        return viewAllMeals(model);
+    }
+    
+    @PostMapping("/submit")
+    public String submitMeal(@ModelAttribute("newMyMeal") Meal myMeal, Model model) {
+        mealRepository.save(myMeal);
+        return "inputMeal";
+    }
 }

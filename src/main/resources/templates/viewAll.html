@@ -1,39 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <meta charset="UTF-8">
+    <title>Meal and Exercise List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body class="bg-success">
-<p>links added later</p>
-<div class="container py-4">
-<table>
-<tr th:each="currentMeales: ${Meales}">
-	<td th:text="${currentMeales.id}" />
-	<td th:text="${currentMeales.mealName}" />
-	<td th:text="${currentMeales.calories}" />
-	<td><a th:href="@{/edit/{id}(id=${currentMeales.id})}">Edit</a></td>
-	<td><a th:href="@{/delete/{id}(id=${currentMeales.id})}">Delete</a></td>
-	</tr>
-</table>
-</form>
-</div>
-<div class="container py-4">
-<table>
-<tr th:each="currentExercises: ${Exercises}">
-	<td th:text="${currentExercises.id}" />
-	<td th:text="${currentExercises.exerciseName}" />
-	<td th:text="${currentExercises.amount}" />
-	<td><a th:href="@{/edit/{id}(id=${currentExercises.id})}">Edit</a></td>
-	<td><a th:href="@{/delete/{id}(id=${currentExercises.id})}">Delete</a></td>
-	</tr>
-</table>
-</form>
-<a th:href="@{/addNewMeal}">add more</a>
-</div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <div class="container py-4">
+        <h2>Meals</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Meal Name</th>
+                    <th>Calories</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="currentMeal : ${myMeals}">
+                    <td th:text="${currentMeal.id}"></td>
+                    <td th:text="${currentMeal.mealName}"></td>
+                    <td th:text="${currentMeal.calories}"></td>
+                    <td><a th:href="@{/meals/edit/{id}(id=${currentMeal.id})}">Edit</a></td>
+                    <td><a th:href="@{/meals/delete/{id}(id=${currentMeal.id})}">Delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/meals/input}">Add More Meals</a>
+    </div>
+
+    <div class="container py-4">
+        <h2>Exercises</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Exercise Name</th>
+                    <th>Amount</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="currentExercise : ${myExercises}">
+                    <td th:text="${currentExercise.id}"></td>
+                    <td th:text="${currentExercise.exerciseName}"></td>
+                    <td th:text="${currentExercise.amount}"></td>
+                    <td><a th:href="@{/exercises/edit/{id}(id=${currentExercise.id})}">Edit</a></td>
+                    <td><a th:href="@{/exercises/delete/{id}(id=${currentExercise.id})}">Delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/exercises/input}">Add More Exercises</a>
+        <a th:href="@{/users/input}" class="btn btn-secondary">add users</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

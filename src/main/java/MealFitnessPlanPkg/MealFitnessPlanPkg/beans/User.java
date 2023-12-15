@@ -1,111 +1,97 @@
-/**
- * @author Joshua Vestal-Bennett - javestalbennett
- * CIS175 - Fall 2023
- * Nov 12, 2023
-*/
-package MealFitnessPlanPkg.MealFitnessPlanPkg.beans;
+package MealFitnessPlanPkg.beans;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
-/**
- * 
- */
-@Embeddable
+@Entity
 public class User {
-	public int userId;
-	public String userName;
-	public ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-	public ArrayList<Meal> meals = new ArrayList<Meal>();
-	
-	// default no-args constructor
-	public User() {
-	}
-	
-	// constructor
-	public User(int userId, String userName, ArrayList<Exercise> exercises, ArrayList<Meal> meals) {
-	}
-	
-	// getters and setters
-	
 
-	/**
-	 * @return the userId
-	 */
-	public int getUserId() {
-		return userId;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int userId;
 
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    private String userName;
 
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Exercise> exercises = new ArrayList<>();
 
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Meal> meals = new ArrayList<>();
 
-	/**
-	 * @return the exercises
-	 */
-	public ArrayList<Exercise> getExercises() {
-		return exercises;
-	}
+    // Default no-args constructor
+    public User() {
+    }
 
-	/**
-	 * @param exercises the exercises to set
-	 */
-	public void setExercises(ArrayList<Exercise> exercises) {
-		this.exercises = exercises;
-	}
+    // Constructor
+    public User(String userName) {
+        this.userName = userName;
+    }
 
-	/**
-	 * @return the meals
-	 */
-	public ArrayList<Meal> getMeals() {
-		return meals;
-	}
+    // Getters and setters
 
-	/**
-	 * @param meals the meals to set
-	 */
-	public void setMeals(ArrayList<Meal> meals) {
-		this.meals = meals;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	@Override
-	public String toString() {
-		String userData;
-		userData = "User [userName=" + userName + ", userId=" + userId + "] \n";
-		
-		// add exercises to user data string
-		for(int i = 0; i < exercises.size(); i++)
-		{
-			userData += "Exercise [exerciseName=" + exercises.get(i).getExerciseName() + 
-					", amount=" + exercises.get(i).getAmount() + "] \n";
-		}
-		
-		// add meals to user data string
-		for(int i = 0; i < meals.size(); i++)
-		{
-			userData += "Meal [mealName=" + meals.get(i).getMealName() + 
-					", amount=" + meals.get(i).getCalories() + "] \n";
-		}
-		
-		
-		return userData;
-	}
+    public void setUserId(int id) {
+        this.userId = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder userData = new StringBuilder();
+        userData.append("User [userName=").append(userName).append(", userId=").append(userId).append("] \n");
+
+        // add exercises to user data string
+        for (Exercise exercise : exercises) {
+            userData.append("Exercise [exerciseName=").append(exercise.getExerciseName())
+                    .append(", amount=").append(exercise.getAmount()).append("] \n");
+        }
+
+        // add meals to user data string
+        for (Meal meal : meals) {
+            userData.append("Meal [mealName=").append(meal.getMealName())
+                    .append(", amount=").append(meal.getCalories()).append("] \n");
+        }
+
+        return userData.toString();
+    }
 }
