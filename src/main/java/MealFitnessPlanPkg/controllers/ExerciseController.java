@@ -1,76 +1,62 @@
 package MealFitnessPlanPkg.controllers;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import MealFitnessPlanPkg.MealFitnessPlanPkg.beans.Exercise;
+import MealFitnessPlanPkg.Repository.ExerciseRepository;
+import MealFitnessPlanPkg.beans.Exercise;
 
-/**
- * @author Itsal - Quinn Birdsley
- * CIS175 - Fall 2021
- * Nov 27, 2023
- */
-
-/**
- * 
- * Explanation: This controller handles all requests related to exercises. It
- * has five methods:
- * 
- * getAllExercises(): This method returns a list of all exercises in the system.
- * 
- * 
- * 
- * getExerciseById(int exerciseId): This method returns an exercise with the
- * specified ID.
- * 
- * 
- * 
- * createExercise(Exercise exercise): This method creates a new exercise and
- * returns it.
- * 
- * 
- * 
- * updateExercise(int exerciseId, Exercise exercise): This method updates an
- * existing exercise with the specified ID and returns it.
- * 
- * 
- * 
- * deleteExercise(int exerciseId): This method deletes an exercise with the
- * specified ID.
- */
 @Controller
 @RequestMapping("/exercises")
 public class ExerciseController {
 
-	private final ExerciseService exerciseService;
+    @Autowired
+    private ExerciseRepository exerciseRepository;
 
-	public ExerciseController(ExerciseService exerciseService) {
-		this.exerciseService = exerciseService;
-	}
+    @GetMapping("/all")
+    public String viewAllExercise(Model model) {
+        if (exerciseRepository.findAll().isEmpty()) {
+            return createExercise(model);
+        }
 
-	@GetMapping
-	public List<Exercise> getAllExercises() {
-		return exerciseService.findAllExercises();
-	}
+        model.addAttribute("myExercises", exerciseRepository.findAll());
+        return "viewAll";
+    }
 
-	@GetMapping("/{exerciseId}")
-	public Exercise getExerciseById(@PathVariable int exerciseId) {
-		return exerciseService.findExerciseById(exerciseId);
-	}
+    @GetMapping("/input")
+    public String createExercise(Model model) {
+        Exercise myExercise = new Exercise();
+        model.addAttribute("newMyExercises", myExercise);
+        return "inputExercise";
+    }
 
-	@PostMapping
-	public Exercise createExercise(@RequestBody Exercise exercise) {
-		return exerciseService.createExercise(exercise);
-	}
+    @GetMapping("/edit/{id}")
+    public String editExercise(@PathVariable("id") long id, Model model) {
+        Exercise myExercise = exerciseRepository.findById(id).orElse(new Exercise());
+        System.out.println("ITEM TO EDIT: " + myExercise.toString());
+        model.addAttribute("newMyExercises", myExercise);
+        return "inputExercise";
+    }
 
-	@PutMapping("/{exerciseId}")
-	public Exercise updateExercise(@PathVariable int exerciseId, @RequestBody Exercise exercise) {
-		return exerciseService.updateExercise(exerciseId, exercise);
-	}
+    @PostMapping("/update/{id}")
+    public String updateExercise(@PathVariable("id") int id, Exercise myExercise, Model model) {
+        myExercise.setId(id);
+        exerciseRepository.save(myExercise);
+        return "viewAll";
+    }
 
-	@DeleteMapping("/{exerciseId}")
-	public void deleteExercise(@PathVariable int exerciseId) {
-		exerciseService.deleteExercise(exerciseId);
-	}
+    @GetMapping("/delete/{id}")
+    public String deleteExercise(@PathVariable("id") long id, Model model) {
+        Exercise myExercise = exerciseRepository.findById(id).orElse(null);
+        exerciseRepository.delete(myExercise);
+        return viewAllExercise(model);
+    }
+
+    @PostMapping("/submit")
+    public String submitExercise(@ModelAttribute("newMyExercises") Exercise myExercise, Model model) {
+        exerciseRepository.save(myExercise);
+        return "inputExercise";
+    }
 }

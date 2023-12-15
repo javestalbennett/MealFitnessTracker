@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -7,7 +7,9 @@
 
 </head>
 <body>
-<p>links added later</p>
+  <a th:href="@{/meals/input}" class="btn btn-secondary">Add Meals</a>
+  <a th:href="@{/exercises/input}" class="btn btn-secondary">add exercises</a>
+  <a th:href="@{/users/input}" class="btn btn-secondary">add users</a>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>

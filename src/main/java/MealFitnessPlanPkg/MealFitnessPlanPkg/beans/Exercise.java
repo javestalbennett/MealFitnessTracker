@@ -3,63 +3,78 @@
  * CIS175 - Fall 2023
  * Nov 12, 2023
 */
-package MealFitnessPlanPkg.MealFitnessPlanPkg.beans;
+package MealFitnessPlanPkg.beans;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 /**
  * 
  */
-@Embeddable
+@Entity
 public class Exercise {
-	@Id
-	@GeneratedValue
-	private int id;
-	private String exerciseName;
-	private String amount; // number of reps, sets, time, etc. of some exercise
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	// default no-args constructor
-	public Exercise() {
-		
-	}
-	
-	// constructor
-	public Exercise(String exerciseName, String amount)
-	{
-	}
-	
-	// getters and setters
+    private String exerciseName;
+    private String amount; // number of reps, sets, time, etc. of some exercise
 
-	/**
-	 * @return the exerciseName
-	 */
-	public String getExerciseName() {
-		return exerciseName;
+    // default no-args constructor
+    public Exercise() {
+
+    }
+
+    // constructor
+    public Exercise(String exerciseName, String amount) {
+        this.exerciseName = exerciseName;
+        this.amount = amount;
+    }
+
+    // getters and setters
+
+    /**
+     * @return the exerciseName
+     */
+    public String getExerciseName() {
+        return exerciseName;
+    }
+
+    /**
+     * @param exerciseName the exerciseName to set
+     */
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
+    }
+
+    /**
+     * @return the amount
+     */
+    public String getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+    
+    
+    public int getId() {
+		return id;
 	}
 
-	/**
-	 * @param exerciseName the exerciseName to set
-	 */
-	public void setExerciseName(String exerciseName) {
-		this.exerciseName = exerciseName;
-	}
-
-	/**
-	 * @return the amount
-	 */
-	public String getAmount() {
-		return amount;
-	}
-
-	/**
-	 * @param amount the amount to set
-	 */
-	public void setAmount(String amount) {
-		this.amount = amount;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
-	public String toString() {
-		return "Exercise [exerciseName=" + exerciseName + ", amount=" + amount + "]";
-	}
+    public String toString() {
+        return "Exercise [id=" + id + ", exerciseName=" + exerciseName + ", amount=" + amount + "]";
+    }
 }

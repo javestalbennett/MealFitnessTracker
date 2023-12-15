@@ -3,14 +3,17 @@
  * CIS175 - Fall 2023
  * Nov 12, 2023
 */
-package MealFitnessPlanPkg.MealFitnessPlanPkg.beans;
+package MealFitnessPlanPkg.beans;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 /**
  * 
  */
-@Embeddable
+@Entity
 public class Meal {
 	@Id
 	@GeneratedValue
@@ -54,6 +57,16 @@ public class Meal {
 	 */
 	public void setCalories(double calories) {
 		this.calories = calories;
+	}
+	
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
